@@ -181,6 +181,10 @@ namespace NumberCruncher
                 case 22: return new Altitude();
                 case 23: return new Modulo();
                 case 24: return new PlusOne();
+                case 25: return new PairDifferences();
+                case 26: return new War();
+                case 27: return new Determinants();
+                case 28: return new Trickster();
                 default: return null;
             }
         }
@@ -391,7 +395,7 @@ namespace NumberCruncher
 
     public class PlusOne : SingleNumCalculation
     {
-        public PlusOne() : base("Plus One", 6, 6f + (38344f / 44100f), true) { }
+        public PlusOne() : base("Plus One", 7, 6f + (38344f / 44100f), true) { }
 
         protected override string Calculate(SingleNumInput num)
         {
@@ -488,7 +492,7 @@ namespace NumberCruncher
 
     public class PrimeChecker : DoubleNumCalculation
     {
-        public PrimeChecker() : base("Prime Checker", 3, 6f + (34713f / 44100f), true) { }
+        public PrimeChecker() : base("Prime Checker", 4, 6f + (34713f / 44100f), true) { }
 
         protected override string Calculate(DoubleNumInput nums)
         {
@@ -524,6 +528,81 @@ namespace NumberCruncher
             {
                 var modifiedNums = new[] { nums.GetDigitAt(0, i), nums.GetDigitAt(1, i) }.Select(x => x == 0 ? 10 : x).ToList();
                 temp += modifiedNums[0] % modifiedNums[1];
+            }
+            return temp;
+        }
+    }
+
+    public class PairDifferences : DoubleNumCalculation
+    {
+        public PairDifferences() : base("Pair Differences", 5, 8f + (41734f / 44100f), true) { }
+
+        protected override string Calculate(DoubleNumInput nums)
+        {
+            var temp = "";
+            for (int i = 0; i < 6; i++)
+            {
+                var num1 = (nums.GetDigitAt(0, i * 2) * 10) + nums.GetDigitAt(0, (i * 2) + 1);
+                var num2 = (nums.GetDigitAt(1, i * 2) * 10) + nums.GetDigitAt(1, (i * 2) + 1);
+                temp += Mathf.Abs(num1 - num2).ToString("00");
+            }
+            return temp;
+        }
+    }
+
+    public class War : DoubleNumCalculation
+    {
+        public War() : base("War", 3, 12f + (42484f / 44100f), true) { }
+
+        protected override string Calculate(DoubleNumInput nums)
+        {
+            var temp = "";
+            for (int i = 0; i < 2; i++)
+            {
+                for (int j = 0; j < 6; j++)
+                {
+                    if (nums.GetDigitAt(i, j * 2) > nums.GetDigitAt(i, (j * 2) + 1))
+                        temp += "0";
+                    else if (nums.GetDigitAt(i, j * 2) < nums.GetDigitAt(i, (j * 2) + 1))
+                        temp += "1";
+                    else
+                        temp += "2";
+                }
+            }
+            return temp;
+        }
+    }
+
+    public class Determinants : DoubleNumCalculation
+    {
+        public Determinants() : base("Determinants", 7, 14f + (5858f / 44100f), true) { }
+
+        protected override string Calculate(DoubleNumInput nums)
+        {
+            var temp = "";
+            for (int i = 0; i < 6; i++)
+                temp += Mathf.Abs((nums.GetDigitAt(0, i * 2) * nums.GetDigitAt(1, (i * 2) + 1)) - (nums.GetDigitAt(1, i * 2) * nums.GetDigitAt(0, (i * 2) + 1))).ToString("00");
+            return temp;
+        }
+    }
+
+    public class Trickster : DoubleNumCalculation
+    {
+        public Trickster() : base("Trickster", 5, 8f + (25416f / 44100f), true) { }
+
+        protected override string Calculate(DoubleNumInput nums)
+        {
+            var temp = "";
+            for (int i = 0; i < 12; i++)
+            {
+                var next = i;
+                for (int j = 1; j < 12; j++)
+                    if (nums.GetDigitAt(0, (i + j) % 12) == nums.GetDigitAt(0, i))
+                    {
+                        next = (i + j) % 12;
+                        break;
+                    }
+                temp += nums.GetDigitAt(1, next);
             }
             return temp;
         }
